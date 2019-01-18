@@ -51,7 +51,7 @@ class Gameboard extends Component{
         <div className="container">
           <div className="row justify-content-around flex-wrap">
             {data.map((tile)=>
-              <Tile id={tile.id} name={tile.name} />
+              <Tile id={tile.id} name={tile.name} img={tile.img} />
             )}
           </div>
         </div>
@@ -61,10 +61,14 @@ class Gameboard extends Component{
 };
 
 class Tile extends Component{
+  clickthis = (q) => {
+    console.log(q);
+  };
+
   render() {
     return (
-      <div className="card m-3 game-tile">
-        <img src="https://placehold.it/200/200" alt="" className="card-img-top"/>
+      <div className="card m-3 game-tile" onClick={this.clickthis('whaddup')}>
+        <img src={this.props.img} alt="" className="card-img-top"/>
         <div className="card-body">
           <div className="h5 card-title">{this.props.id} - {this.props.name}</div>
         </div>

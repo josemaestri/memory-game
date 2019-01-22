@@ -2,123 +2,81 @@ import React, {Component} from 'react';
 import './App.css';
 import data from './data/data.js';
 
+import Header from './components/Header';
+import TopSection from './components/TopSection';
+import Gameboard from './components/Gameboard';
+import Tile from './components/Tile';
+import Footer from './components/Footer';
+import AppWrapper from './components/AppWrapper';
 
-class Header extends Component{
-  render() {
-    return (
-      <header>
-        <div className="container">
-          <div className="row">
-            <div className="col">
-              <a className="h2" href="/"><strong>Memory Game</strong></a>
-            </div>
-            <div className="col">
-              <h2>Click an image to begin.</h2>
-            </div>
-            <div className="col">
-              <h2>
-                Current: {this.props.current} | Top: {this.props.top}
-              </h2>
-            </div>
-          </div>
-        </div>
-      </header>
-    );
-  }
-};
 
-class TopSection extends Component{
-  render() {
-    return (
-      <div className="top-section">
-        <div className="container">
-          <div className="row">
-            <div className="col">
-              <h1>Memory Game!</h1>
-              <p>Click on an image to earn points, but don't click on any more than once!</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-};
-
-class Gameboard extends Component{
-  render() {
-    return (
-      <div className="gameboard">
-        <div className="container">
-          <div className="row justify-content-around flex-wrap">
-            {data.map((tile)=>
-              <Tile id={tile.id} name={tile.name} img={tile.img} />
-            )}
-          </div>
-        </div>
-      </div>
-    );
-  }
-};
-
-class Tile extends Component{
-  clickthis = (q) => {
-    console.log(q);
-  };
-
-  render() {
-    return (
-      <div className="card m-3 game-tile" onClick={this.clickthis('whaddup')}>
-        <img src={this.props.img} alt="" className="card-img-top"/>
-        <div className="card-body">
-          <div className="h5 card-title">{this.props.id} - {this.props.name}</div>
-        </div>
-      </div>
-    );
-  }
-};
-
-class Footer extends Component{
-  render (){
-    return (
-      <div className="footer text-left">
-        <div className="container">
-          <div className="row">
-            <div className="col">
-              <h5>Github</h5>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
+var _ = require('lodash');
 
 
 class App extends Component{
   state = {
     score: 0,
-    topScore: 0
+    topScore: 0,
+    data: _.shuffle(data)
   };
 
   // functions
+
+  handleClick = (id) => {
+    this.setCounted(id);
+
+    let item = this.state.data.filter(item => item.id === id);
+    let isCounted = item[0].counted;
+    
+    if (isCounted) {
+      this.resetGame();
+    } else{
+      this.incrementScore();
+    }
+  };
+
+  setCounted = (id) => {
+    const newData = this.state.data.map(item =>{
+      if(item.id === id){
+        return {id: item.id, img: item.img, name: item.name, counted: true};        
+      } else{
+        return {id: item.id, img: item.img, name: item.name, counted: item.counted};
+      }
+    });
+    this.setState({data: _.shuffle(newData)});
+  };
+
   incrementScore = () => {
     this.setState({score: this.state.score + 1});
+    if(this.state.score >= this.state.topScore){
+      this.setState({topScore: this.state.score + 1});
+    }
+    if(this.state.score >= data.length - 1){
+      this.setState({score: this.state.score + 1, topScore: this.state.topScore + 1});
+      setTimeout(() => {
+        alert('Congratulations! You won! Start again?');
+        this.resetGame();
+      },500);
+    }
   };
   
   resetGame = () => {
-    this.setState({score: 0});
+    this.setState({score: 0,data: _.shuffle(data)});
   };
-
 
 
   render() {
     return (
-      <div className="app text-center mt-5">
+      <AppWrapper>
         <Header current={this.state.score} top={this.state.topScore} />
         <TopSection />
-        <Gameboard />
+        <Gameboard data={this.state.data}>
+          {this.state.data.map((tile)=>
+            <Tile key={tile.id} id={tile.id} name={tile.name} img={tile.img} setCounted={this.handleClick} />
+          )}
+        </Gameboard>
         <Footer />
-      </div>
+      </AppWrapper>
     );  
   } 
 }

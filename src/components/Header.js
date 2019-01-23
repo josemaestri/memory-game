@@ -3,14 +3,14 @@ import React, {Component} from 'react';
 class Header extends Component{
   render() {
     return (
-      <header>
+      <header className="fixed-top py-3 mb-5 bg-primary">
         <div className="container">
           <div className="row">
             <div className="col">
-              <a className="h2" href="/"><strong>Memory Game</strong></a>
+              <a className="h2" href="/"><strong>The Animani-Game</strong></a>
             </div>
             <div className="col">
-              <h2>Click an image to begin.</h2>
+              <h2 className={this.props.color}>{this.props.text}</h2>
             </div>
             <div className="col">
               <h2>

@@ -1,8 +1,9 @@
 .game-tile{
   height: 15em;
   overflow: hidden;
+  background-size: cover;
 }
 
 .game-tile img{
-  
+
 }

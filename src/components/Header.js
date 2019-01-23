@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 class Header extends Component{
   render() {
     return (
-      <header className="fixed-top py-3 mb-5 bg-primary">
+      <header className="fixed-top py-3 mb-5 bg-warning shadow-lg">
         <div className="container">
           <div className="row">
             <div className="col">

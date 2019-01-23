@@ -2,8 +2,6 @@
   height: 15em;
   overflow: hidden;
   background-size: cover;
-}
-
-.game-tile img{
-
+  background-repeat: no-repeat;
+  background-position: top center;
 }

@@ -8,6 +8,7 @@ import Gameboard from './components/Gameboard';
 import Tile from './components/Tile';
 import Footer from './components/Footer';
 import AppWrapper from './components/AppWrapper';
+import background from './assets/background.jpg' 
 
 
 var _ = require('lodash');
